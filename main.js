@@ -9,10 +9,10 @@ let missionId = JSON.parse(localStorage.getItem("missionId")) || 0;
 function Time(){
     let dateNow = new Date();
     let hours = dateNow.getHours();
-    let realHours = hours > 12 ? hours % 12 || 12 : hours;
+    let realHours = (hours % 12) || 12;
 
     let minutes = dateNow.getMinutes();
-    let realMinutes = minutes > 10 ? minutes : `0${minutes}`;
+    let realMinutes = minutes >= 10 ? minutes : `0${minutes}`;
     
     let pmOrAm = hours < 12 ? "Am" : "Pm";
 
@@ -30,7 +30,7 @@ function The_date(){
 // ============================================================= //
 inpMission.addEventListener("input" , IS_valid_in_input);
 function IS_valid_in_input(){
-    if (inpMission.value.length > 16) {
+    if (inpMission.value.length > 20) {
         inpMission.style.backgroundColor = "crimson";
     }else{
         inpMission.style.backgroundColor = "white";
@@ -39,9 +39,7 @@ function IS_valid_in_input(){
 
 btnAddMession.addEventListener("click" , Create_mission);
 function Create_mission(){
-    let regex = /([a-z]|[A-Z]) {0,}/g
-
-    if (inpMission.value.length <= 16 && inpMission.value.match(regex) ) 
+    if (inpMission.value.length <= 20) 
     {
         let theDate = The_date();
         let check = false;
@@ -99,10 +97,10 @@ function Show_mission(){
         {
             let obj = mission_List[i].contentMission_List[j];
                 content += `
-                    <div data-id=${obj.id} style="background-color:${obj.bg}" class="mession-box mb-2 text-light w-100 p-2 d-flex flex-column align-items-center">
+                    <div data-id=${obj.id} style="background-color:${obj.bg}" class="position-relative mession-box mb-2 text-light w-100 p-2 d-flex flex-column align-items-center">
                         <h2 class="mt-1 mission-title">${obj.title}</h2>
-                        <div class="d-flex align-items-center gap-2 mt-2">
-                            <i class="cur fa-solid btn-delete-mission fa-trash text-danger"></i>
+                        <i class="position-absolute top-0 start-0 m-2 cur fa-solid btn-delete-mission fa-trash text-danger"></i>
+                        <div class="d-flex align-items-center gap-2 mt-2 ">
                             ${obj.elements}
                         </div>
                     </div>
@@ -114,7 +112,7 @@ function Show_mission(){
                 <div class="d-flex justify-content-between align-items-center mb-2 details-container-mission">
                     <h3 class="text-decoration-underline">Date : ${mission_List[i].checkDate}</h3>
                     <div>
-                        <i style="transform: rotate(${mission_List[i].arrowRotate});" class="fa-solid fa-arrow-down btn-arrow-down fs-6 me-2"></i>
+                        <i style="transform: rotate(${mission_List[i].arrowRotate});" class="fa-solid fa-arrow-down btn-arrow-down me-2"></i>
                         <i class="cur fa-solid fa-trash btn-delete-container"></i>
                     </div>
                 </div>
@@ -230,7 +228,7 @@ function Change_mission_name() {
             input.style.top = `${clientY - 20}px`;
             document.body.appendChild(input);
             input.value = "";
-
+            input.style.backgroundColor = "white";
             Hidden_input(input);
             Check_change_mission_name(input, getIndex, missionTitle);
         };
@@ -248,11 +246,10 @@ function Get_obj(index) {
 }
 
 function Check_change_mission_name(input, getIndex, missionTitle) {
-    let regex = /([a-z]|[A-Z]) {0,}/g;
     let obj = Get_obj(getIndex);
 
     input.oninput = function(){
-        if (input.value.length <= 16 && input.value.match(regex)) {
+        if (input.value.length <= 20) {
             obj.title = input.value;
             missionTitle.innerHTML = input.value;
             localStorage.setItem("mission_List", JSON.stringify(mission_List));
@@ -264,14 +261,10 @@ function Check_change_mission_name(input, getIndex, missionTitle) {
 }
 
 function Hidden_input(input) {
-    let getClass = input.getAttribute("match-classes");
     document.body.onclick = function(e) {
-        let getClassElement = e.target.getAttribute("match-classes");
-
-        if (getClass != getClassElement) {
+        let getClassElement = e.target.hasAttribute("match-classes");
+        if (false == getClassElement) {
             $(input).remove();
-        } else {
-            $(input).fadeIn();
         }
     }
 }
@@ -282,22 +275,18 @@ function Complete_mission(){
     for (let i = 0; i < btnComplete.length; i++) {
         btnComplete[i].onclick = function(){
             let mission = btnComplete[i].closest(".mession-box");
-            let theTime = Time();
-            let timeElement = `<h3 class="text-warning"> ${theTime} </h3>`;
             let getIndex = +mission.getAttribute("data-id");
+            let div = mission.querySelector("div");
+            let theTime = Time();
             let obj = Get_obj(getIndex);
-            let elements = `
-                <i class="cur fa-solid btn-delete-mission fa-trash text-danger"></i>
-                ${timeElement}
-            `;
-            let div =  mission.querySelector("div");
+            let timeElement = `<h3 class="text-warning"> ${theTime} </h3>`;
+            let elements = timeElement;
             // ==== //
             div.innerHTML = elements;
             mission.style.backgroundColor = "green";
             obj.bg = "green";
             obj.elements = timeElement;
             localStorage.setItem("mission_List" , JSON.stringify(mission_List));
-            Delete_mission();
         }
     }
 }

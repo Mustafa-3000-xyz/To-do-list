@@ -39,6 +39,9 @@
     transition: .3s;
     text-align: center;
 }
+.btn-arrow-down{
+    font-size: 30px;
+}
 /* media@ */
 @media screen and (min-width:0) and (max-width:576px){
     header h3{
@@ -54,6 +57,9 @@
         font-size: 25px;
     }
     .btn-delete-container{
+        font-size: 25px;
+    }
+    .btn-arrow-down{
         font-size: 25px;
     }
 }
