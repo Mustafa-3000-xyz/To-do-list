@@ -1,0 +1,59 @@
+/* nav */
+.form-control{
+    border: 1px solid black;
+    transition: .3s;
+}
+.form-control:focus{
+    color: black;
+    border: 1px solid black;
+    box-shadow: none;
+}
+/* sec-mession */
+.sec-mession {
+    background-color: rgb(202, 202, 202);
+}
+.sec-mession  i{
+    cursor: pointer;
+}
+.mession-box{
+    border: 3px dotted white;
+    transition: .3s;
+}
+.mession-box i{
+    font-size: 25px;
+}
+.btn-arrow-down{
+    transition: .4s;
+}
+.details-container-mission{
+    background-color:lightslategrey;
+    padding: 12px;
+}
+.fa-trash{
+    color: rgb(191, 15, 50);
+}
+.inp-mission-name{
+    position: absolute;
+    width: 230px;
+    padding: 5px;
+    transition: .3s;
+    text-align: center;
+}
+/* media@ */
+@media screen and (min-width:0) and (max-width:576px){
+    header h3{
+        font-size: 20px;
+    }
+    .mession-box h2 , h3{
+        font-size: 20px;
+    }
+    .mession-box h3{
+        margin-top: 12px;
+    }
+    .details-container-mission h3{
+        font-size: 25px;
+    }
+    .btn-delete-container{
+        font-size: 25px;
+    }
+}
